@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Ventas por Bancos</title>
+</head>
+<body>
+    <h1>Consulta de Ventas por Bancos en un Año Específico</h1>
+
+    <!-- Formulario para ingresar el año -->
+    <form method="POST">
+        <label for="year">Ingrese el Año:</label>
+        <input type="text" id="year" name="year" placeholder="Ejemplo: 2017" required>
+        <button type="submit">Consultar</button>
+    </form>
+    <br>
+    <!-- Botón para volver a inicio -->
+    <button onclick="window.location.href='/'">Volver a Inicio</button>
+
+    <!-- Mostrar resultados -->
+    {% if resultados %}
+    <h2>Ventas por banco en el año {{ year }}</h2> <!-- Título dinámico -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Banco</th>
+                <th>Total Ventas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in resultados %}
+                <tr>
+                    <td>{{ row[0] }}</td>  <!-- Banco -->
+                    <td>{{ row[1] }}</td>  <!-- Total Ventas -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No se encontraron resultados para el año {{ year }}.</p>
+{% endif %}
+
+
+    
+</body>
+</html>

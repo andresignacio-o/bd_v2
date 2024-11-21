@@ -122,12 +122,52 @@ def patrones_compra():
     )
 
 
-# Otra Consulta (Pendiente de Implementación)
-@app.route("/otra_consulta", methods=["GET", "POST"])
-def otra_consulta():
-    """Ruta para una tercera consulta."""
-    # Lógica para la consulta futura
-    return render_template("otra_consulta.html")
+@app.route("/banco_por_year", methods=["GET", "POST"])
+def banco_por_year():
+    """Consulta ventas por bancos en un año específico."""
+    resultados = []
+    year = None
+
+    if request.method == "POST":
+        year = request.form.get("year")
+
+        # Validamos que se haya proporcionado un año válido
+        if not year or not year.isdigit():
+            flash("Debe ingresar un año válido.", "error")
+        else:
+            # Conexión a la base de datos
+            conexion, cursor = conectar_db()
+            if conexion and cursor:
+                try:
+                    query = """
+                    SELECT 
+                        t.bank_name, 
+                        TO_CHAR(SUM(f.total_price), 'FM999,999,999,999') AS total_ventas_formateado
+                    FROM 
+                        fact_table f
+                    JOIN 
+                        trans_dim t ON f.payment_key = t.payment_key
+                    JOIN 
+                        time_dim ti ON f.time_key = ti.time_key
+                    WHERE 
+                        ti.year = %s
+                    GROUP BY 
+                        t.bank_name
+                    ORDER BY 
+                        SUM(f.total_price) DESC;
+                    """
+                    cursor.execute(query, (year,))
+                    resultados = cursor.fetchall()
+                    print("Resultados de la consulta:", resultados)  # Verifica los resultados aquí
+
+                except Exception as e:
+                    flash("Error al ejecutar la consulta.", "error")
+                    print("Error:", e)
+                finally:
+                    # Cerramos la conexión
+                    desconectar_db(conexion, cursor)
+
+    return render_template("banco_por_year.html", resultados=resultados, year=year)
 
 if __name__ == "__main__":
     app.run(debug=True)
