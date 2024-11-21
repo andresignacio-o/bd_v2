@@ -11,9 +11,17 @@
     <!-- Formulario para ingresar el año -->
     <form method="POST">
         <label for="year">Ingrese el Año:</label>
-        <input type="text" id="year" name="year" placeholder="Ejemplo: 2017" required>
+        <input 
+            type="number" 
+            id="year" 
+            name="year" 
+            placeholder="Ejemplo: 2017" 
+            required 
+            oninvalid="this.setCustomValidity('Debe ingresar un número válido.')" 
+            oninput="this.setCustomValidity('')">
         <button type="submit">Consultar</button>
     </form>
+    
     <br>
     <!-- Botón para volver a inicio -->
     <button onclick="window.location.href='/'">Volver a Inicio</button>

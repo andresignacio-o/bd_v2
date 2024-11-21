@@ -158,7 +158,6 @@ def banco_por_year():
                     """
                     cursor.execute(query, (year,))
                     resultados = cursor.fetchall()
-                    print("Resultados de la consulta:", resultados)  # Verifica los resultados aquí
 
                 except Exception as e:
                     flash("Error al ejecutar la consulta.", "error")
