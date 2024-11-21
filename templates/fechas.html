@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Fechas</title>
+</head>
+<body>
+    <h1>Consulta de Fechas Mínima y Máxima</h1>
+    
+    <!-- Bloque para mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div>
+          {% for category, message in messages %}
+            <p class="{{ category }}">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Mostrar resultados de fechas -->
+    {% if fecha_minima %}
+        <p>Fecha mínima: {{ fecha_minima }}</p>
+    {% endif %}
+
+    {% if fecha_maxima %}
+        <p>Fecha máxima: {{ fecha_maxima }}</p>
+    {% endif %}
+</body>
+</html>

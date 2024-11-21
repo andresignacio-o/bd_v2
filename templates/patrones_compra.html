@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patrones de Compra</title>
+</head>
+<body>
+    <h1>Patrones de Compra Según Temporada o Festividades</h1>
+
+    <!-- Bloque para mostrar mensajes flash -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div>
+                {% for category, message in messages %}
+                    <p class="{{ category }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Formulario de entrada -->
+    <form method="POST" action="/patrones_compra">
+        <div>
+            <label for="categoria">Seleccione la categoría:</label>
+            <select id="categoria" name="categoria" required>
+                <option value="">--Seleccione una categoría--</option>
+                {% for cat in categorias %}
+                    <option value="{{ cat }}" {% if cat == categoria %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="mes">Ingrese el mes (número, 1-12):</label>
+            <input type="number" id="mes" name="mes" value="{{ mes }}" min="1" max="12" required>
+        </div>
+
+        <div>
+            <label for="year_inicio">Año de inicio:</label>
+            <input type="number" id="year_inicio" name="year_inicio" value="{{ year_inicio }}" required>
+        </div>
+
+        <div>
+            <label for="year_fin">Año de fin:</label>
+            <input type="number" id="year_fin" name="year_fin" value="{{ year_fin }}" required>
+        </div>
+
+        <button type="submit">Consultar</button>
+
+        <!-- Botón para volver a inicio -->
+        <br>
+        <br>
+        <button type="button" onclick="window.location.href='/'">Volver a Inicio</button>
+
+    </form>
+
+    <!-- Tabla de resultados -->
+    {% if resultados %}
+        <h2>Resultados para {{ categoria }} en el mes {{ mes }} entre {{ year_inicio }} y {{ year_fin }}</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Item ID</th>
+                    <th>Nombre del Producto</th>
+                    {% for year in range(year_inicio, year_fin + 1) %}
+                        <th>Cantidad {{ year }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in resultados %}
+                <tr>
+                    <td>{{ item[0] }}</td>
+                    <td>{{ item[1] }}</td>
+                    {% for cantidad in item[2:] %}
+                        <td>{{ cantidad }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    {% else %}
+        <p>No se encontraron resultados para la categoría y mes ingresados en el rango de años.</p>
+    {% endif %}
+</body>
+</html>

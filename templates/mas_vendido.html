@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos Más Vendidos</title>
+</head>
+<body>
+    
+    <h1>Consulta de Productos Más Vendidos</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div>
+          {% for category, message in messages %}
+            <p class="{{ category }}">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <label for="categoria">Categoría:</label>
+        <select id="categoria" name="categoria" required>
+            <option value="">--Seleccione una categoría--</option>
+            {% for categoria in categorias %}
+                <option value="{{ categoria }}">{{ categoria }}</option>
+            {% endfor %}
+        </select>
+        <label for="fecha_inicio">Fecha Inicio:</label>
+        <input type="date" id="fecha_inicio" name="fecha_inicio" required>
+        <label for="fecha_fin">Fecha Fin:</label>
+        <input type="date" id="fecha_fin" name="fecha_fin" required>
+        <button type="submit">Consultar</button>
+    </form>
+
+    {% if resultados %}
+    <h2>Resultados:</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Item Key</th>
+                <th>Item Name</th>
+                <th>Cantidad Vendida</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in resultados %}
+            <tr>
+                <td>{{ item[0] }}</td>
+                <td>{{ item[1] }}</td>
+                <td>{{ item[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No se encontraron resultados.</p>
+    {% endif %}
+    <button onclick="window.location.href='/'">Volver a Inicio</button>
+</body>
+</html>
