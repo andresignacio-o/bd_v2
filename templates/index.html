@@ -4,11 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página Inicial</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to bottom right, #4facfe, #00f2fe);
+            color: #fff;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px 50px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            margin: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        button:active {
+            transform: scale(1);
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        button:focus {
+            outline: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Consultas de Base de Datos</h1>
-    <button onclick="window.location.href='/mas_vendidos';">Productos Más Vendidos</button>
-    <button onclick="window.location.href='/patrones_compra';">Patrones de Compra</button>
-    <button onclick="window.location.href='/banco_por_year'">Ventas anuales por banco</button>
+    <div class="container">
+        <h1>Consultas de Base de Datos</h1>
+        <button onclick="window.location.href='/mas_vendidos';">Productos Más Vendidos</button>
+        <button onclick="window.location.href='/patrones_compra';">Patrones de Compra</button>
+        <button onclick="window.location.href='/banco_por_year';">Ventas Anuales por Banco</button>
+    </div>
 </body>
 </html>

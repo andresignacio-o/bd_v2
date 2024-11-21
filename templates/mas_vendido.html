@@ -33,6 +33,9 @@
         <input type="date" id="fecha_fin" name="fecha_fin" required>
         <button type="submit">Consultar</button>
     </form>
+    <br>
+    <button onclick="window.location.href='/'">Volver a Inicio</button>
+
 
     {% if resultados %}
     <h2>Resultados:</h2>
@@ -57,6 +60,5 @@
     {% else %}
     <p>No se encontraron resultados.</p>
     {% endif %}
-    <button onclick="window.location.href='/'">Volver a Inicio</button>
 </body>
 </html>
