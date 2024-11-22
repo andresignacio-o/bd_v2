@@ -4,61 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Productos Más Vendidos</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    
-    <h1>Consulta de Productos Más Vendidos</h1>
+    <div class="scroll-container">
+        <header>
+            <a href="/" class="logo">DataShop<span>.</span></a>
+            <nav class="navbar">
+                <a href="/">Inicio</a>
+                <a href="#consulta1">Productos Más Vendidos</a>
+            </nav>
+        </header>
+        <main>
+            <section id="consulta1" class="consulta-section">
+                <div class="consulta-text">
+                    <h2>Consulta de Productos Más Vendidos</h2>
+                    
+                    <!-- Debug info -->
+                    <div style="background-color: #f0f0f0; padding: 10px; margin: 10px 0;">
+                        <p>Debug - Categorías disponibles:</p>
+                        <pre>{{ categorias|tojson }}</pre>
+                    </div>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div>
-          {% for category, message in messages %}
-            <p class="{{ category }}">{{ message }}</p>
-          {% endfor %}
-        </div>
-      {% endif %}
-    {% endwith %}
+                    <!-- Mensajes Flash -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <div class="flash-messages">
+                                {% for category, message in messages %}
+                                    <p class="{{ category }}">{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
 
-    <form method="POST">
-        <label for="categoria">Categoría:</label>
-        <select id="categoria" name="categoria" required>
-            <option value="">--Seleccione una categoría--</option>
-            {% for categoria in categorias %}
-                <option value="{{ categoria }}">{{ categoria }}</option>
-            {% endfor %}
-        </select>
-        <label for="fecha_inicio">Fecha Inicio:</label>
-        <input type="date" id="fecha_inicio" name="fecha_inicio" required>
-        <label for="fecha_fin">Fecha Fin:</label>
-        <input type="date" id="fecha_fin" name="fecha_fin" required>
-        <button type="submit">Consultar</button>
-    </form>
-    <br>
-    <button onclick="window.location.href='/'">Volver a Inicio</button>
+                    <!-- Formulario -->
+                    <form method="POST">
+                        <label for="categoria">Categoría:</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">--Seleccione una categoría--</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria }}">{{ categoria }}</option>
+                            {% endfor %}
+                        </select>
 
+                        <label for="fecha_inicio">Fecha Inicio:</label>
+                        <input type="date" id="fecha_inicio" name="fecha_inicio" required>
 
-    {% if resultados %}
-    <h2>Resultados:</h2>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Item Key</th>
-                <th>Item Name</th>
-                <th>Cantidad Vendida</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in resultados %}
-            <tr>
-                <td>{{ item[0] }}</td>
-                <td>{{ item[1] }}</td>
-                <td>{{ item[2] }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <p>No se encontraron resultados.</p>
-    {% endif %}
+                        <label for="fecha_fin">Fecha Fin:</label>
+                        <input type="date" id="fecha_fin" name="fecha_fin" required>
+
+                        <button type="submit" class="consulta-btn">Consultar</button>
+                    </form>
+
+                    <!-- Mostrar resultados si existen -->
+                    {% if resultados %}
+                        <div class="resultados">
+                            <h3>Resultados:</h3>
+                            <pre>{{ resultados|tojson }}</pre>
+                        </div>
+                    {% endif %}
+                </div>
+            </section>
+        </main>
+    </div>
 </body>
 </html>

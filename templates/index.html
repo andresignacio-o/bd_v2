@@ -38,22 +38,73 @@
             </section>
 
             <!-- Consulta 1 -->
+                    <!-- Consulta 1 -->
             <section id="consulta1" class="consulta-section">
                 <div class="consulta-text">
                     <h2>Productos Más Vendidos por Categoría</h2>
-                    <form action="/consulta1" method="POST">
+                    
+                    <!-- Mensajes Flash -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <div class="flash-messages">
+                                {% for category, message in messages %}
+                                    <p class="{{ category }}">{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+                    
+                    <form method="POST">
                         <label for="categoria">Categoría:</label>
-                        <input type="text" id="categoria" name="categoria" required>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">--Seleccione una categoría--</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria }}" {% if categoria == categoria_seleccionada %}selected{% endif %}>
+                                    {{ categoria }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        
+                        <label for="fecha_inicio">Fecha Inicio:</label>
+                        <input type="date" id="fecha_inicio" name="fecha_inicio" 
+                            value="{{ fecha_inicio }}" required>
+                        
+                        <label for="fecha_fin">Fecha Fin:</label>
+                        <input type="date" id="fecha_fin" name="fecha_fin" 
+                            value="{{ fecha_fin }}" required>
+                        
                         <button type="submit" class="consulta-btn">Consultar</button>
                     </form>
-                    <div id="resultados1">
-                        <!-- Aquí se mostrarán los resultados -->
-                    </div>
+                    
+                    {% if resultados_mas_vendidos %}
+                        <div id="resultados1" class="resultados-tabla">
+                            <h3>Resultados:</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID Producto</th>
+                                        <th>Nombre</th>
+                                        <th>Cantidad Vendida</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item_key, item_name, cantidad in resultados_mas_vendidos %}
+                                        <tr>
+                                            <td>{{ item_key }}</td>
+                                            <td>{{ item_name }}</td>
+                                            <td>{{ cantidad }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="consulta-image">
                     <img src="https://plus.unsplash.com/premium_vector-1724421640863-764d26d27959?q=80&w=2960&auto=format&fit=crop" alt="Consulta 1">
                 </div>
             </section>
+            
 
             <!-- Consulta 2 -->
             <section id="consulta2" class="consulta-section">

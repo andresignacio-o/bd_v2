@@ -2,30 +2,25 @@ from flask import Flask, render_template, request, flash
 from db import conectar_db, desconectar_db
 
 app = Flask(__name__)
-app.secret_key = 'tu_llave_secreta'  # Cambia esto a algo seguro para usar mensajes flash
+app.secret_key = 'tu_llave_secreta'
 
 # Lista de categorías definidas directamente
 CATEGORIAS = ["Beverage", "Coffee", "Dishware", "Food", "Gum", "Kitchen", "Medicine"]
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def home():
-    """Página inicial con botones para cada consulta."""
-    return render_template("index.html")
-
-# Consulta Productos Más Vendidos
-@app.route("/mas_vendidos", methods=["GET", "POST"])
-def mas_vendidos():
-    categorias = CATEGORIAS
-    resultados = []
+    """Página principal que maneja todas las consultas"""
+    resultados_mas_vendidos = []
     categoria = None
     fecha_inicio = None
     fecha_fin = None
-
+    
     if request.method == "POST":
+        # Obtener datos del formulario
         categoria = request.form.get("categoria")
         fecha_inicio = request.form.get("fecha_inicio")
         fecha_fin = request.form.get("fecha_fin")
-
+        
         if not categoria or not fecha_inicio or not fecha_fin:
             flash("Debe ingresar categoría y fechas válidas.", "error")
         else:
@@ -33,24 +28,32 @@ def mas_vendidos():
             if conexion and cursor:
                 try:
                     query = """
-                    SELECT i.item_key, i.item_name, SUM(f.quantity) AS cantidad_vendida
-                    FROM fact_table f
-                    JOIN item_dim i ON f.item_key = i.item_key
-                    JOIN time_dim t ON f.time_key = t.time_key
-                    WHERE i."desc" LIKE %s || '%%'
-                    AND TO_TIMESTAMP(t.date, 'DD-MM-YYYY HH24:MI') BETWEEN %s AND %s
-                    GROUP BY i.item_key, i.item_name
-                    ORDER BY cantidad_vendida DESC;
+                        SELECT i.item_key, i.item_name, SUM(f.quantity) AS cantidad_vendida
+                        FROM fact_table f
+                        JOIN item_dim i ON f.item_key = i.item_key
+                        JOIN time_dim t ON f.time_key = t.time_key
+                        WHERE i."desc" LIKE %s || '%%'
+                        AND TO_TIMESTAMP(t.date, 'DD-MM-YYYY HH24:MI') BETWEEN %s AND %s
+                        GROUP BY i.item_key, i.item_name
+                        ORDER BY cantidad_vendida DESC;
                     """
                     cursor.execute(query, (categoria, fecha_inicio, fecha_fin))
-                    resultados = cursor.fetchall()
+                    resultados_mas_vendidos = cursor.fetchall()
                 except Exception as e:
-                    flash("Error al ejecutar la consulta.", "error")
+                    flash(f"Error al ejecutar la consulta: {str(e)}", "error")
                     print("Error:", e)
                 finally:
                     desconectar_db(conexion, cursor)
+    
+    return render_template(
+        "index.html",
+        categorias=CATEGORIAS,
+        resultados_mas_vendidos=resultados_mas_vendidos,
+        categoria_seleccionada=categoria,
+        fecha_inicio=fecha_inicio,
+        fecha_fin=fecha_fin
+    )
 
-    return render_template("mas_vendido.html", categorias=categorias, resultados=resultados)
 
 
 def generar_consulta_dinamica(categoria, mes, year_inicio, year_fin):
