@@ -3,71 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
-    <style>
-        /* General Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(to bottom right, #4facfe, #00f2fe);
-            color: #fff;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .container {
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 30px 50px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Button Styles */
-        button {
-            background-color: #ff9800;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1rem;
-            font-weight: bold;
-            margin: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        button:hover {
-            transform: scale(1.1);
-            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        button:active {
-            transform: scale(1);
-            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
-        }
-
-        button:focus {
-            outline: none;
-        }
-    </style>
+    <title>MDS BASE DE DATOS</title>
+    <!-- Aseguramos que el path al CSS sea correcto -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.cdnfonts.com/css/open-sauce-one" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Consultas de Base de Datos</h1>
-        <button onclick="window.location.href='/mas_vendidos';">Productos Más Vendidos</button>
-        <button onclick="window.location.href='/patrones_compra';">Patrones de Compra</button>
-        <button onclick="window.location.href='/banco_por_year';">Ventas Anuales por Banco</button>
+    <div class="scroll-container">
+        <!-- Header -->
+        <header>
+            <a href="#" class="logo">DataShop<span>.</span></a>
+            <nav class="navbar">
+                <a href="#consulta1">Productos Más Vendidos</a>
+                <a href="#consulta2">Patrones de Compra</a>
+                <a href="#consulta3">Comportamiento del Producto</a>
+            </nav>
+        </header>
+
+        <!-- Hero Section -->
+        <main>
+            <section class="hero">
+                <div class="hero-text">
+                    <h1>¡Bienvenidos!</h1>
+                    <p>Explora las últimas tendencias, descubre comportamientos y entiende las preferencias de tus clientes con nuestras herramientas intuitivas.</p>
+                    <div class="container">
+                        <input type="text" placeholder="Buscar...">
+                        <button class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="https://plus.unsplash.com/premium_photo-1683288446489-71997f24255d?q=80&w=1374&auto=format&fit=crop" alt="Hero Image">
+                </div>
+            </section>
+
+            <!-- Consulta 1 -->
+            <section id="consulta1" class="consulta-section">
+                <div class="consulta-text">
+                    <h2>Productos Más Vendidos por Categoría</h2>
+                    <form action="/consulta1" method="POST">
+                        <label for="categoria">Categoría:</label>
+                        <input type="text" id="categoria" name="categoria" required>
+                        <button type="submit" class="consulta-btn">Consultar</button>
+                    </form>
+                    <div id="resultados1">
+                        <!-- Aquí se mostrarán los resultados -->
+                    </div>
+                </div>
+                <div class="consulta-image">
+                    <img src="https://plus.unsplash.com/premium_vector-1724421640863-764d26d27959?q=80&w=2960&auto=format&fit=crop" alt="Consulta 1">
+                </div>
+            </section>
+
+            <!-- Consulta 2 -->
+            <section id="consulta2" class="consulta-section">
+                <div class="consulta-text">
+                    <h2>Análisis de Patrones de Compra Según Temporada</h2>
+                    <form action="/consulta2" method="POST">
+                        <label for="categoria2">Categoría:</label>
+                        <input type="text" id="categoria2" name="categoria" required>
+                        <label for="mes">Mes:</label>
+                        <input type="number" id="mes" name="mes" min="1" max="12" required>
+                        <button type="submit" class="consulta-btn">Consultar</button>
+                    </form>
+                    <div id="resultados2">
+                        <!-- Aquí se mostrarán los resultados -->
+                    </div>
+                </div>
+                <div class="consulta-image">
+                    <img src="https://plus.unsplash.com/premium_vector-1724671151148-531617c2b38d?q=80&w=2960&auto=format&fit=crop" alt="Consulta 2">
+                </div>
+            </section>
+
+            <!-- Consulta 3 -->
+            <section id="consulta3" class="consulta-section">
+                <div class="consulta-text">
+                    <h2>Comportamiento del Producto a lo Largo del Tiempo</h2>
+                    <form action="/consulta3" method="POST">
+                        <label for="producto">Nombre del Producto:</label>
+                        <input type="text" id="producto" name="producto" required>
+                        <button type="submit" class="consulta-btn">Consultar</button>
+                    </form>
+                    <div id="resultados3">
+                        <!-- Aquí se mostrarán los resultados -->
+                    </div>
+                </div>
+                <div class="consulta-image">
+                    <img src="https://plus.unsplash.com/premium_vector-1724686453071-654d26bb7d40?q=80&w=2960&auto=format&fit=crop" alt="Consulta 3">
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer Section -->
+        <div class="bajada">
+            <div class="bajada-contenido">
+                <h2>Integrantes</h2>
+                <ul>
+                    <li>Camila Laura</li>
+                    <li>Andrés Oñate</li>
+                    <li>Vania Sepúlveda</li>
+                    <li>Javiera Yañez</li>
+                </ul>
+                <h2>Profesor</h2>
+                <p>Sebastián Ferrada</p>
+            </div>
+            <div class="logo-esquina">
+                <img src="http://mds.uchile.cl/wp-content/uploads/2020/04/logo_mds_web_01.svg" alt="Logo del grupo">
+            </div>
+        </div>
     </div>
 </body>
 </html>

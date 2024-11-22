@@ -1,0 +1,384 @@
+/* Estilos generales */
+html{
+    font-size: 16px;
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+    overflow: hidden;
+}
+
+body {
+    font-family: 'Open Sauce One', sans-serif; /*Arial, sans-serif;*/
+    margin: 0;
+    padding: 0;
+    background-color: #ECF8E5;
+}
+
+/* Header */
+header {
+    position: fixed;
+    top:0; 
+    left:0; 
+    right: 0;
+    display: flex;
+    height: 10px; /* Define una altura fija */
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 9%;
+    background: #fff;
+    z-index: 1000;
+    box-shadow:0 .5rem 1rem rgba(0,0,0,.1);
+}
+
+header .logo {
+    font-size: 2rem;
+    font-weight: bolder;
+    color: #333;
+}
+
+header .logo span{
+    color: #5EC57E;
+}
+
+header .navbar a{
+    font-size: 1rem;
+    padding: 0 1.5rem;
+    color: #666;
+}
+
+header .navbar a:hover{
+    color: #5EC57E;
+}
+
+.logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+}
+
+/* Hero Section */
+.hero {
+    display: flex;
+    color: #1C6434;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px 20px;
+    gap: 20px;
+    padding-top: calc(10px + 80px);  /* Ajusta el relleno dinámicamente */
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-text h1{
+    font-weight: bolder;
+    flex: 1;
+    font-size: 1.5rem;
+    /*font-weight: 600;*/
+    text-transform: capitalize;
+    margin: 0.2rem 0 1.2rem;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.hero-image img {
+    max-width: 100%; /* Controla el tamaño máximo de la imagen */
+    height: auto;   /* Mantiene las proporciones */
+    border-radius: 5px; /* Opcional: da bordes redondeados */
+}
+
+/* Estilos para la sección "Consulta 1" */
+.consulta-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    /*background-color: #f9f9f9;
+    border: 1px solid #ddd; */
+    border-radius: 5px;
+    margin: 20px 0;
+}
+
+.consulta-text {
+    flex: 1;
+}
+
+.consulta-text h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.consulta-text form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.consulta-text label {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.consulta-text input {
+    padding: 8px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.consulta-btn {
+    padding: 10px 20px;
+    background-color: #86d85780;
+    color: white;
+    border: none;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.consulta-btn:hover {
+    background-color: #0056b3;
+}
+
+.consulta-image {
+    flex: 1;
+    text-align: center;
+}
+
+.consulta-image img {
+    max-width: 70%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Barra de búsqueda */
+.container {
+    position: relative;
+    width: 300px; /* Controla el ancho del contenedor */
+    margin-top: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    padding-right: 45px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+button {
+    background: #5EC57E;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    position: absolute;
+    border: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 0 5px 5px 0;
+    color: #fff6f6;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #35B276;
+}
+
+
+/* media queries */
+@media (max-width:991px){
+    html{
+        font-size: 55%;
+    }
+}
+
+/* Secciones de consultas */
+section {
+    display: block; /* Asegura el flujo vertical */
+    margin: 40px 20px;
+    padding: 20px;
+    border-radius: 5px;
+    /*background-color: #fff;
+    border: 1px solid #ccc;*/
+}
+
+/* Formulario */
+form {
+    display: flex; /* Alinea elementos del formulario */
+    flex-direction: column; /* Ordena en columna */
+    gap: 10px; /* Espaciado entre elementos */
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Botones generales del formulario */
+.consulta-btn {
+    background: #5EC57E; /* Color adecuado */
+    width: auto; /* Ajusta el tamaño al contenido */
+    height: auto; /* Ajusta la altura al contenido */
+    padding: 10px 20px; /* Espaciado interno */
+    position: static; /* Usa el flujo normal del documento */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.consulta-btn:hover {
+    background-color: #35B276; /* Efecto hover */
+}
+
+/* Botón de búsqueda específico */
+button.search-btn {
+    background: #5EC57E;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    border-radius: 0 5px 5px 0;
+    color: #fff6f6;
+    cursor: pointer;
+}
+
+button.search-btn:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Tablas de resultados */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+/* Estilo para la sección de bajada */
+.bajada {
+    position: relative;
+    background: linear-gradient(to bottom, transparent 30%,#DCF4CE 70%);
+    height: 300px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.bajada-contenido {
+    z-index: 1;
+    color:#5EC57E;
+}
+
+.bajada-contenido h2 {
+    margin: 10px 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.bajada-contenido ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.bajada-contenido ul li {
+    margin: 5px 0;
+    font-size: 1.1rem;
+}
+
+.bajada-contenido p {
+    margin: 5px 0;
+    font-size: 1.1rem;
+}
+
+/* Estilo del medio-círculo */
+.bajada::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 300px;
+    background-color:#DCF4CE;
+    border-top-left-radius: 60%;
+    border-top-right-radius: 60%;
+    z-index: 0;
+}
+
+  /* Logo en la esquina inferior izquierda */
+.logo-esquina {
+    position: absolute;
+    bottom: 20px;
+    left: 25px;
+    z-index: 1;
+}
+
+.logo-esquina img {
+    width: 150px; /* Ajusta el tamaño según sea necesario */
+    height: auto;
+}
+
+/* Hacer que el contenedor tenga barra de desplazamiento */
+.scroll-container {
+    max-height: 100vh; /* Limita la altura al tamaño de la ventana */
+    overflow-y: auto; /* Agrega scroll vertical si el contenido sobrepasa la altura */
+    overflow-x: hidden; /* Oculta el scroll horizontal */
+    scroll-behavior: smooth; /* Habilita el scroll suave */
+}
+
+  /* Personalizar barra de desplazamiento (opcional) */
+.scroll-container::-webkit-scrollbar {
+    width: 10px; /* Ancho de la barra */
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background: #888; /* Color de la barra */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color al pasar el mouse */
+}

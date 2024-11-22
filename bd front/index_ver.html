@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MDS BASE DE DATOS</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/open-sauce-one" rel="stylesheet">
+</head>
+
+<body>
+    <div class="scroll-container">
+    <header>
+        <a href="#" class="logo">DataShop<span>.</span></a>
+        <nav class="navbar">
+            <a href="#consulta1">Productos Más Vendidos</a>
+            <a href="#consulta2">Patrones de Compra</a>
+            <a href="#consulta3">Comportamiento del Producto</a>
+        </nav>
+        
+    </header>
+    <main>
+        <section class="hero">
+            <div class="hero-text"> 
+                <h1>¡Bienvenidos!</h1>
+                <p>Explora las últimas tendencias, descubre comportamientos y entiende las preferencias de tus clientes de manera fácil y rápida. Nuestra plataforma está diseñada para ofrecerte un acceso intuitivo a consultas avanzadas, brindándote información clave.</p>
+                <div class="container">
+                    <input type="text" placeholder="Buscar...">
+                    <button><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://plus.unsplash.com/premium_photo-1683288446489-71997f24255d?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Empathy Image">
+            </div>
+        </section>
+
+        <!-- Consulta 1: Productos Más Vendidos por Categoría -->
+        <section id="consulta1" class="consulta-section">
+            <div class="consulta-text">
+                <h2>Productos Más Vendidos por Categoría</h2>
+                <form action="/consulta1" method="POST">
+                    <label for="categoria">Categoría:</label>
+                    <input type="text" id="categoria" name="categoria" required>
+                    <button type="submit" class="consulta-btn">Consultar</button>
+                </form>
+                <div id="resultados1">
+                    <!-- Aquí se mostrarán los resultados en una tabla -->
+                </div>
+            </div>
+            <div class="consulta-image">
+                <img src="https://plus.unsplash.com/premium_vector-1724421640863-764d26d27959?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                    alt="idk Image">
+            </div>
+        </section>
+
+
+    <!-- Consulta 2: Análisis de Patrones de Compra -->
+    <section id="consulta2" class="consulta-section">
+        <div class="consulta-text">
+            <h2>Análisis de Patrones de Compra Según Temporada</h2>
+            <form action="/consulta2" method="POST">
+                <label for="categoria2">Categoría:</label>
+                <input type="text" id="categoria2" name="categoria" required>
+                <label for="mes">Mes:</label>
+                <input type="number" id="mes" name="mes" min="1" max="12" required>
+                <button type="submit" class="consulta-btn">Consultar</button>
+            </form>
+            <div id="resultados2">
+                <!-- Aquí se mostrarán los resultados en una tabla -->
+            </div>
+        </div>
+        <div class="consulta-image">
+            <img src="https://plus.unsplash.com/premium_vector-1724671151148-531617c2b38d?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                alt="Seasonal Analysis Image">
+        </div>
+    </section>
+
+        <!-- Consulta 3: Comportamiento del Producto -->
+        <section id="consulta3" class="consulta-section">
+            <div class="consulta-text">
+                <h2>Comportamiento del Producto a lo Largo del Tiempo</h2>
+                <form action="/consulta3" method="POST">
+                    <label for="producto">Nombre del Producto:</label>
+                    <input type="text" id="producto" name="producto" required>
+                    <button type="submit" class="consulta-btn">Consultar</button>
+                </form>
+                <div id="resultados3">
+                    <!-- Aquí se mostrarán los resultados en una tabla -->
+                </div>
+            </div>
+            <div class="consulta-image">
+                <img src="https://plus.unsplash.com/premium_vector-1724686453071-654d26bb7d40?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
+                    alt="Product Behavior Image">
+            </div>
+        </section>
+
+        <!-- Consulta 4? -->
+        <!-- -->
+
+    </main>
+
+    <div class="bajada">
+        <div class="bajada-contenido">
+            <h2>Integrantes</h2>
+            <ul>
+                <li>Camila Laura</li>
+                <li>Andrés Oñate</li>
+                <li>Vania Sepúlveda</li>
+                <li>Javiera Yañez</li>
+            </ul>
+            <h2>Profesor</h2>
+            <p>Sebastián Ferrada</p>
+            </div>
+            <div class="logo-esquina">
+            <img src="http://mds.uchile.cl/wp-content/uploads/2020/04/logo_mds_web_01.svg" alt="Logo del grupo" />
+        </div>
+    </div>
+    
+    </div>
+</body>
+</html>
