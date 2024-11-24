@@ -11,50 +11,120 @@ CATEGORIAS = ["Beverage", "Coffee", "Dishware", "Food", "Gum", "Kitchen", "Medic
 def home():
     """Página principal que maneja todas las consultas"""
     resultados_mas_vendidos = []
+    resultados_patrones_compra = []
+    resultados_bancos = []
     categoria = None
     fecha_inicio = None
     fecha_fin = None
-    
+    mes = None
+    year_inicio = None
+    year_fin = None
+    year = None
+
     if request.method == "POST":
-        # Obtener datos del formulario
-        categoria = request.form.get("categoria")
-        fecha_inicio = request.form.get("fecha_inicio")
-        fecha_fin = request.form.get("fecha_fin")
-        
-        if not categoria or not fecha_inicio or not fecha_fin:
-            flash("Debe ingresar categoría y fechas válidas.", "error")
-        else:
-            conexion, cursor = conectar_db()
-            if conexion and cursor:
-                try:
-                    query = """
-                        SELECT i.item_key, i.item_name, SUM(f.quantity) AS cantidad_vendida
-                        FROM fact_table f
-                        JOIN item_dim i ON f.item_key = i.item_key
-                        JOIN time_dim t ON f.time_key = t.time_key
-                        WHERE i."desc" LIKE %s || '%%'
-                        AND TO_TIMESTAMP(t.date, 'DD-MM-YYYY HH24:MI') BETWEEN %s AND %s
-                        GROUP BY i.item_key, i.item_name
-                        ORDER BY cantidad_vendida DESC;
-                    """
-                    cursor.execute(query, (categoria, fecha_inicio, fecha_fin))
-                    resultados_mas_vendidos = cursor.fetchall()
-                except Exception as e:
-                    flash(f"Error al ejecutar la consulta: {str(e)}", "error")
-                    print("Error:", e)
-                finally:
-                    desconectar_db(conexion, cursor)
-    
+        consulta = request.form.get("consulta")
+
+        if consulta == "productos_mas_vendidos":
+            # Consulta 1: Productos más vendidos
+            categoria = request.form.get("categoria")
+            fecha_inicio = request.form.get("fecha_inicio")
+            fecha_fin = request.form.get("fecha_fin")
+            
+            if not categoria or not fecha_inicio or not fecha_fin:
+                flash("Debe ingresar categoría y fechas válidas.", "error")
+            else:
+                conexion, cursor = conectar_db()
+                if conexion and cursor:
+                    try:
+                        query = """
+                            SELECT i.item_key, i.item_name, SUM(f.quantity) AS cantidad_vendida
+                            FROM fact_table f
+                            JOIN item_dim i ON f.item_key = i.item_key
+                            JOIN time_dim t ON f.time_key = t.time_key
+                            WHERE i."desc" LIKE %s || '%%'
+                            AND TO_TIMESTAMP(t.date, 'DD-MM-YYYY HH24:MI') BETWEEN %s AND %s
+                            GROUP BY i.item_key, i.item_name
+                            ORDER BY cantidad_vendida DESC;
+                        """
+                        cursor.execute(query, (categoria, fecha_inicio, fecha_fin))
+                        resultados_mas_vendidos = cursor.fetchall()
+                    except Exception as e:
+                        flash(f"Error al ejecutar la consulta: {str(e)}", "error")
+                        print("Error:", e)
+                    finally:
+                        desconectar_db(conexion, cursor)
+
+        elif consulta == "patrones_compra":
+            # Consulta 2: Patrones de compra
+            categoria = request.form.get("categoria")
+            mes = request.form.get("mes")
+            year_inicio = int(request.form.get("year_inicio"))
+            year_fin = int(request.form.get("year_fin"))
+
+            if not categoria or not mes or not year_inicio or not year_fin:
+                flash("Debe ingresar todos los datos válidos.", "error")
+            else:
+                conexion, cursor = conectar_db()
+                if conexion and cursor:
+                    try:
+                        query = generar_consulta_dinamica(categoria, mes, year_inicio, year_fin)
+                        cursor.execute(query, (categoria, mes, year_inicio, year_fin))
+                        resultados_patrones_compra = cursor.fetchall()
+                    except Exception as e:
+                        flash("Error al ejecutar la consulta.", "error")
+                        print("Error:", e)
+                    finally:
+                        desconectar_db(conexion, cursor)
+
+        elif consulta == "banco_por_year":
+            # Consulta 3: Ventas por bancos
+            year = request.form.get("year")
+
+            if not year or not year.isdigit():
+                flash("Debe ingresar un año válido.", "error")
+            else:
+                conexion, cursor = conectar_db()
+                if conexion and cursor:
+                    try:
+                        query = """
+                        SELECT 
+                            t.bank_name, 
+                            TO_CHAR(SUM(f.total_price), 'FM999,999,999,999') AS total_ventas_formateado
+                        FROM 
+                            fact_table f
+                        JOIN 
+                            trans_dim t ON f.payment_key = t.payment_key
+                        JOIN 
+                            time_dim ti ON f.time_key = ti.time_key
+                        WHERE 
+                            ti.year = %s
+                        GROUP BY 
+                            t.bank_name
+                        ORDER BY 
+                            SUM(f.total_price) DESC;
+                        """
+                        cursor.execute(query, (year,))
+                        resultados_bancos = cursor.fetchall()
+                    except Exception as e:
+                        flash("Error al ejecutar la consulta.", "error")
+                        print("Error:", e)
+                    finally:
+                        desconectar_db(conexion, cursor)
+
     return render_template(
         "index.html",
         categorias=CATEGORIAS,
         resultados_mas_vendidos=resultados_mas_vendidos,
+        resultados_patrones_compra=resultados_patrones_compra,
+        resultados_bancos=resultados_bancos,
         categoria_seleccionada=categoria,
         fecha_inicio=fecha_inicio,
-        fecha_fin=fecha_fin
+        fecha_fin=fecha_fin,
+        mes=mes,
+        year_inicio=year_inicio,
+        year_fin=year_fin,
+        year=year
     )
-
-
 
 def generar_consulta_dinamica(categoria, mes, year_inicio, year_fin):
     # Generar columnas dinámicas para cada año en el rango

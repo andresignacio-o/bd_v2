@@ -17,7 +17,7 @@
             <nav class="navbar">
                 <a href="#consulta1">Productos Más Vendidos</a>
                 <a href="#consulta2">Patrones de Compra</a>
-                <a href="#consulta3">Comportamiento del Producto</a>
+                <a href="#consulta3">Bancos más utilizados</a>
             </nav>
         </header>
 
@@ -54,26 +54,21 @@
                     {% endwith %}
                     
                     <form method="POST">
+                        <input type="hidden" name="consulta" value="productos_mas_vendidos">
                         <label for="categoria">Categoría:</label>
                         <select id="categoria" name="categoria" required>
                             <option value="">--Seleccione una categoría--</option>
-                            {% for categoria in categorias %}
-                                <option value="{{ categoria }}" {% if categoria == categoria_seleccionada %}selected{% endif %}>
-                                    {{ categoria }}
-                                </option>
+                            {% for cat in categorias %}
+                                <option value="{{ cat }}" {% if cat == categoria_seleccionada %}selected{% endif %}>{{ cat }}</option>
                             {% endfor %}
                         </select>
-                        
                         <label for="fecha_inicio">Fecha Inicio:</label>
-                        <input type="date" id="fecha_inicio" name="fecha_inicio" 
-                            value="{{ fecha_inicio }}" required>
-                        
+                        <input type="date" id="fecha_inicio" name="fecha_inicio" value="{{ fecha_inicio }}" required>
                         <label for="fecha_fin">Fecha Fin:</label>
-                        <input type="date" id="fecha_fin" name="fecha_fin" 
-                            value="{{ fecha_fin }}" required>
-                        
+                        <input type="date" id="fecha_fin" name="fecha_fin" value="{{ fecha_fin }}" required>
                         <button type="submit" class="consulta-btn">Consultar</button>
                     </form>
+                    
                     
                     {% if resultados_mas_vendidos %}
                         <div id="resultados1" class="resultados-tabla">
@@ -106,42 +101,142 @@
             
 
             <!-- Consulta 2 -->
+
             <section id="consulta2" class="consulta-section">
                 <div class="consulta-text">
                     <h2>Análisis de Patrones de Compra Según Temporada</h2>
-                    <form action="/consulta2" method="POST">
-                        <label for="categoria2">Categoría:</label>
-                        <input type="text" id="categoria2" name="categoria" required>
+            
+                    <!-- Mensajes Flash -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <div class="flash-messages">
+                                {% for category, message in messages %}
+                                    <p class="{{ category }}">{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+            
+                    <form method="POST">
+                        <input type="hidden" name="consulta" value="patrones_compra">
+                        <label for="categoria">Categoría:</label>
+                        <select id="categoria" name="categoria" required>
+                            <option value="">--Seleccione una categoría--</option>
+                            {% for cat in categorias %}
+                                <option value="{{ cat }}" {% if cat == categoria %}selected{% endif %}>{{ cat }}</option>
+                            {% endfor %}
+                        </select>
                         <label for="mes">Mes:</label>
-                        <input type="number" id="mes" name="mes" min="1" max="12" required>
+                        <input type="number" id="mes" name="mes" value="{{ mes }}" min="1" max="12" required>
+                        <label for="year_inicio">Año de inicio:</label>
+                        <input type="number" id="year_inicio" name="year_inicio" value="{{ year_inicio }}" required>
+                        <label for="year_fin">Año de fin:</label>
+                        <input type="number" id="year_fin" name="year_fin" value="{{ year_fin }}" required>
                         <button type="submit" class="consulta-btn">Consultar</button>
                     </form>
-                    <div id="resultados2">
-                        <!-- Aquí se mostrarán los resultados -->
-                    </div>
+                    
+            
+                    <!-- Tabla de resultados -->
+                    {% if resultados_patrones_compra %}
+                        <div id="resultados2" class="resultados-tabla">
+                            <h3>Resultados para {{ categoria }} en el mes {{ mes }} entre {{ year_inicio }} y {{ year_fin }}</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Item ID</th>
+                                        <th>Nombre del Producto</th>
+                                        {% for year in range(year_inicio, year_fin + 1) %}
+                                            <th>Cantidad {{ year }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in resultados_patrones_compra %}
+                                    <tr>
+                                        <td>{{ item[0] }}</td>
+                                        <td>{{ item[1] }}</td>
+                                        {% for cantidad in item[2:] %}
+                                            <td>{{ cantidad }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p>No se encontraron resultados para la categoría y mes ingresados en el rango de años.</p>
+                    {% endif %}
                 </div>
+            
                 <div class="consulta-image">
                     <img src="https://plus.unsplash.com/premium_vector-1724671151148-531617c2b38d?q=80&w=2960&auto=format&fit=crop" alt="Consulta 2">
                 </div>
             </section>
+                        
 
             <!-- Consulta 3 -->
             <section id="consulta3" class="consulta-section">
                 <div class="consulta-text">
-                    <h2>Comportamiento del Producto a lo Largo del Tiempo</h2>
-                    <form action="/consulta3" method="POST">
-                        <label for="producto">Nombre del Producto:</label>
-                        <input type="text" id="producto" name="producto" required>
+                    <h2>Consulta de Ventas por Bancos en un Año Específico</h2>
+            
+                    <!-- Mensajes Flash -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            <div class="flash-messages">
+                                {% for category, message in messages %}
+                                    <p class="{{ category }}">{{ message }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endwith %}
+            
+                    <form method="POST">
+                        <input type="hidden" name="consulta" value="banco_por_year">
+                        <label for="year">Ingrese el Año:</label>
+                        <input 
+                            type="number" 
+                            id="year" 
+                            name="year" 
+                            placeholder="Ejemplo: 2017" 
+                            value="{{ year }}" 
+                            required 
+                            oninvalid="this.setCustomValidity('Debe ingresar un número válido.')" 
+                            oninput="this.setCustomValidity('')">
                         <button type="submit" class="consulta-btn">Consultar</button>
                     </form>
-                    <div id="resultados3">
-                        <!-- Aquí se mostrarán los resultados -->
-                    </div>
+                    
+            
+                    <!-- Tabla de resultados -->
+                    {% if resultados_bancos %}
+                        <div id="resultados3" class="resultados-tabla">
+                            <h3>Ventas por banco en el año {{ year }}</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Banco</th>
+                                        <th>Total Ventas</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in resultados_bancos %}
+                                        <tr>
+                                            <td>{{ row[0] }}</td>
+                                            <td>{{ row[1] }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p>No se encontraron resultados para el año {{ year }}.</p>
+                    {% endif %}
                 </div>
+            
                 <div class="consulta-image">
-                    <img src="https://plus.unsplash.com/premium_vector-1724686453071-654d26bb7d40?q=80&w=2960&auto=format&fit=crop" alt="Consulta 3">
+                    <img src="https://plus.unsplash.com/premium_vector-1724671151148-531617c2b38d?q=80&w=2960&auto=format&fit=crop" alt="Consulta 3">
                 </div>
             </section>
+            
         </main>
 
         <!-- Footer Section -->
